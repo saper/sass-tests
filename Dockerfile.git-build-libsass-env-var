@@ -1,0 +1,14 @@
+FROM ubuntu
+
+RUN apt-get update && apt-get install -y git make build-essential
+
+WORKDIR /tmp
+RUN git clone https://github.com/sass/libsass.git; \
+  git clone https://github.com/sass/sassc.git; \
+  cd libsass; \
+  make; \
+  cd ../sassc; \
+  SASS_LIBSASS_PATH=/tmp/libsass script/bootstrap; \
+  cd /tmp && rm -rf sassc libsass
+
+CMD [ "sassc", "--help" ]
